@@ -3,17 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Words Game</title>
+    <title>Guess the word</title>
 
     <link rel="stylesheet" href="./assets/css/style.css">
 </head>
-<body>
-    <section>
-        <div id="about_word">A palavra tem <span id="total_words"></span> letras!</div>
+<body style="text-align: center;">
+    <div style="margin-bottom: 20px;">
+        <ul>
+            <li><span class="tip-square" style="background-color: #90ee90;"></span> → Acertou a letra e a posição</li>
+            <li><span class="tip-square" style="background-color: #e8ee90;"></span> → A letra existe na palavra</li>
+            <li><span class="tip-square" style="background-color: #ee9090;"></span> → Errou ou Repetiu a letra</li>
+        </ul>
+    </div>
+    <section style="height: 300px;">
+        <div id="about_word" style="margin-bottom: 20px; font-style: italic;"></div>
         <section id="input_container"></section>
     </section>
     <section>
-        <button id="check_word" onclick="check()">Check</button>
+        <button id="check_word" class="check-button" onclick="check()">Check</button>
     </section>
 
     <script src="./assets/js/configs.js"></script>

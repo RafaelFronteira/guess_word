@@ -1,3 +1,7 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
 #input_word {
     margin: auto;
 }
@@ -12,11 +16,28 @@
 ._letter {
     width: 2vw; /* Use viewport width for responsiveness */
     height: 6vh;
+    font-size: 1.7rem;
+    font-weight: 700;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    vertical-align: middle;
+    font-variant-caps: titling-caps;
+    text-transform:uppercase
 }
 
 
 ._letter input {
     font-size: 13em;
+}
+
+ul, li {
+    list-style-type: none;
+}
+
+.tip-square {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
 }
 
 .right {
@@ -37,6 +58,31 @@
     color: #f2f2f2;
 }
 
+
+.check-button {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.check-button:hover {
+    background-color: #0056b3;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+}
+
+.check-button:active {
+    background-color: #004494;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 
 
 /* Media queries for different screen sizes */
