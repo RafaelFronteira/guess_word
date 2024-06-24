@@ -1,58 +1,12 @@
-const WORDS = [
-    { "word": "abobora", "tip": "Vegetal laranja muito usado no Halloween" },
-    { "word": "bicicleta", "tip": "Veículo de duas rodas movido por pedal" },
-    { "word": "cachorro", "tip": "Melhor amigo do homem" },
-    { "word": "dinossauro", "tip": "Gigantesco animal pré-histórico" },
-    { "word": "elefante", "tip": "Grande mamífero com tromba" },
-    { "word": "floresta", "tip": "Lugar com muitas árvores" },
-    { "word": "girassol", "tip": "Flor que segue o movimento do sol" },
-    { "word": "igreja", "tip": "Local de culto religioso" },
-    { "word": "jacare", "tip": "Réptil que vive em rios e pântanos" },
-    { "word": "kiwi", "tip": "Fruta marrom por fora e verde por dentro" },
-    { "word": "lagosta", "tip": "Crustáceo marinho apreciado na culinária" },
-    { "word": "melancia", "tip": "Fruta grande com casca verde e polpa vermelha" },
-    { "word": "navio", "tip": "Grande embarcação usada para transporte" },
-    { "word": "papagaio", "tip": "Ave conhecida por imitar sons" },
-    { "word": "quintal", "tip": "Área aberta na parte de trás da casa" },
-    { "word": "rato", "tip": "Pequeno roedor" },
-    { "word": "sapato", "tip": "Calçado que cobre os pés" },
-    { "word": "tartaruga", "tip": "Animal com casco duro nas costas" },
-    { "word": "urubu", "tip": "Ave que se alimenta de carniça" },
-    { "word": "violino", "tip": "Instrumento musical de cordas" },
-    { "word": "xilofone", "tip": "Instrumento musical de percussão com teclas" },
-    { "word": "zebra", "tip": "Animal listrado da savana" },
-    { "word": "abacaxi", "tip": "Fruta tropical com casca espinhosa" },
-    { "word": "balde", "tip": "Recipiente usado para carregar líquidos" },
-    { "word": "coruja", "tip": "Ave noturna de olhos grandes" },
-    { "word": "esquilo", "tip": "Pequeno roedor que adora nozes" },
-    { "word": "foguete", "tip": "Veículo que vai ao espaço" },
-    { "word": "guitarra", "tip": "Instrumento musical com cordas elétrico" },
-    { "word": "ilha", "tip": "Porção de terra cercada por água" },
-    { "word": "jiboia", "tip": "Serpente que mata por constrição" },
-    { "word": "ketchup", "tip": "Molho vermelho usado em hambúrgueres" },
-    { "word": "lua", "tip": "Satélite natural da Terra" },
-    { "word": "morcego", "tip": "Único mamífero que pode voar" },
-    { "word": "neve", "tip": "Precipitação de cristais de gelo" },
-    { "word": "ocelote", "tip": "Felino selvagem encontrado nas Américas" },
-    { "word": "polvo", "tip": "Animal marinho com oito tentáculos" },
-    { "word": "queijo", "tip": "Alimento derivado do leite" },
-    { "word": "rinoceronte", "tip": "Grande mamífero com um ou dois chifres" },
-    { "word": "salto", "tip": "Ação de pular" },
-    { "word": "tapioca", "tip": "Alimento feito com fécula de mandioca" },
-    { "word": "ventilador", "tip": "Aparelho usado para circular o ar" },
-    { "word": "xadrez", "tip": "Jogo de tabuleiro com peças brancas e pretas" },
-    { "word": "amendoim", "tip": "Semente oleaginosa popular em festas juninas" },
-    { "word": "borboleta", "tip": "Inseto com asas coloridas" },
-    { "word": "cacto", "tip": "Planta espinhosa do deserto" },
-    { "word": "escultura", "tip": "Arte de modelar materiais" },
-    { "word": "fantasia", "tip": "Roupas usadas em festas temáticas" },
-    { "word": "geada", "tip": "Camada de gelo que se forma sobre as superfícies" },
-    { "word": "harpa", "tip": "Instrumento musical de cordas" },
-    { "word": "igreja", "tip": "Edifício destinado ao culto religioso" },
-    { "word": "jabuticaba", "tip": "Fruta pequena e preta típica do Brasil" },
-  ];  
+async function loadJSON() {
+    const response = await fetch('WORDS.json');
+    const data = await response.json();
+    return data;
+}
 
 
+
+let WORDS = null;
 let ATTEMPTS = 1;
 let currentWord = null;
 let currentTip = null;
@@ -94,8 +48,6 @@ function create_inputs(randomWord=false) {
     const totalWords = document.getElementById("about_word");
     const totalAttempts = document.getElementById("attempts");
     const divLetterContainer = createDivLetterContainer();
-    
-    console.log('totalAttempts: ', ATTEMPTS)
     
     if (randomWord) {
         const word = get_random_word();
@@ -181,7 +133,7 @@ function block_inputs(div) {
 
 function compare_words(inputs, currentWord) {
     const userWord = getInputedWord(inputs);
-    return currentWord.toLocaleUpperCase() === userWord.toLocaleUpperCase();
+    return normalizeLetter(currentWord.toLocaleUpperCase()) === normalizeLetter(userWord.toLocaleUpperCase());
 }
 
 function add_color_reference(inputs, currentWord) {
@@ -201,10 +153,10 @@ function add_color_reference(inputs, currentWord) {
         const letter = input.value.toLowerCase();
         const correctLetter = wordArray[index];
 
-        if (letter === correctLetter) {
+        if (normalizeLetter(letter) === normalizeLetter(correctLetter)) {
             input.classList.add('right');
             usedLetterCounts[letter] = (usedLetterCounts[letter] || 0) + 1;
-        } else if (wordArray.includes(letter)) {
+        } else if (wordArray.includes((letterIn) => normalizeLetter(letterIn) === normalizeLetter(letter))) {
             usedLetterCounts[letter] = (usedLetterCounts[letter] || 0) + 1;
             
             if (usedLetterCounts[letter] > (letterCounts[letter] || 0)) {
@@ -217,6 +169,11 @@ function add_color_reference(inputs, currentWord) {
         }
     });
 }
+
+function normalizeLetter(letter) {
+    return letter.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
 
 function check_game(inputs, currentWord) {
     if (compare_words(inputs, currentWord)) {
@@ -241,4 +198,7 @@ function check() {
     check_game(inputs, currentWord);
 }
 
-(() => { create_inputs(true) })()
+(async () => {
+    WORDS = await loadJSON(); 
+    create_inputs(true); 
+})();
