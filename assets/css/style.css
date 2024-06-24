@@ -2,6 +2,15 @@ body {
     font-family: Arial, sans-serif;
 }
 
+h1 {
+    color: #757575; /* Cor cinza */
+    font-size: 3rem; /* Tamanho da fonte */
+    font-weight: 300; /* Peso da fonte */
+    text-align: center;
+    text-transform: uppercase; /* Letras maiúsculas */
+    letter-spacing: 2px; /* Espaçamento entre letras */
+}
+
 #input_word {
     margin: auto;
 }

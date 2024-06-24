@@ -53,7 +53,7 @@ const WORDS = [
   ];  
 
 
-let ATTEMPTS = 3;
+let ATTEMPTS = 1;
 let currentWord = null;
 let currentTip = null;
 let currentDiv = null;
@@ -92,7 +92,10 @@ function createDivLetterContainer() {
 function create_inputs(randomWord=false) {
     const inputContainer = document.getElementById("input_container");
     const totalWords = document.getElementById("about_word");
+    const totalAttempts = document.getElementById("attempts");
     const divLetterContainer = createDivLetterContainer();
+    
+    console.log('totalAttempts: ', ATTEMPTS)
     
     if (randomWord) {
         const word = get_random_word();
@@ -101,6 +104,7 @@ function create_inputs(randomWord=false) {
     }
 
     totalWords.textContent = currentTip;
+    totalAttempts.textContent = ATTEMPTS;
 
     for (let i = 0; i < currentWord.length; i++) {
         const input = create_input();
@@ -219,8 +223,8 @@ function check_game(inputs, currentWord) {
         alert('Parabéns!!\nVocê adivinhou a palavra!');
         location.reload();
     } else {
-        if (ATTEMPTS > 0) {
-            ATTEMPTS--;
+        if (ATTEMPTS < 4) {
+            ATTEMPTS++;
             create_inputs();
         }
         else {
