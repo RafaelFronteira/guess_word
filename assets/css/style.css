@@ -1,0 +1,62 @@
+#input_word {
+    margin: auto;
+}
+
+._letter_container {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    margin-bottom: 10px;
+}
+
+._letter {
+    width: 2vw; /* Use viewport width for responsiveness */
+    height: 6vh;
+}
+
+
+._letter input {
+    font-size: 13em;
+}
+
+.right {
+    background-color: #90ee90;
+    border: 1px solid #306630;
+    color: #f2f2f2;
+}
+
+.wrong {
+    background-color: #ee9090;
+    border: 1px solid #663030;
+    color: #f2f2f2;
+}
+
+.almost {
+    background-color: #e8ee90;
+    border: 1px solid #0c0c06;
+    color: #f2f2f2;
+}
+
+
+
+/* Media queries for different screen sizes */
+@media (max-width: 600px) {
+    ._letter {
+        width: 5vw; /* Increase size for small screens */
+        height: 6vh;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 1024px) {
+    ._letter {
+        width: 3vw; /* Medium size for tablets */
+        height: 4vh;
+    }
+}
+
+@media (min-width: 1024px) {
+    ._letter {
+        width: 2vw; /* Smaller size for larger screens */
+        height: 4vh;
+    }
+}
