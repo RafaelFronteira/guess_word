@@ -95,8 +95,7 @@ function create_inputs(randomWord=false) {
     const divLetterContainer = createDivLetterContainer();
     
     if (randomWord) {
-        // const word = get_random_word();
-        const word = WORDS[34];
+        const word = get_random_word();
         currentWord = word['word'];
         currentTip = word['tip']; 
     }
