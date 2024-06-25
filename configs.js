@@ -14,16 +14,16 @@ let currentDiv = null;
 
 
 
-function generate_div_id() {
+function generateDivId() {
     return Math.random().toString(16).slice(2);
 }
 
-function get_random_word() {
+function getRandomWord() {
     const randomIndex = Math.floor(Math.random() * WORDS.length);
     return WORDS.splice(randomIndex, 1).pop();
 }
 
-function create_input() {
+function createInput() {
     const input = document.createElement("input");
 
     input.id = "letter";
@@ -38,19 +38,19 @@ function create_input() {
 function createDivLetterContainer() {
     const div = document.createElement("div");
     div.classList.add("_letter_container");
-    div.id = generate_div_id();
+    div.id = generateDivId();
     return div;
 }
 
 
-function create_inputs(randomWord=false) {
+function startGame(randomWord=false) {
     const inputContainer = document.getElementById("input_container");
     const totalWords = document.getElementById("about_word");
     const totalAttempts = document.getElementById("attempts");
     const divLetterContainer = createDivLetterContainer();
     
     if (randomWord) {
-        const word = get_random_word();
+        const word = getRandomWord();
         currentWord = word['word'];
         currentTip = word['tip'];
         ATTEMPTS = 1;
@@ -60,13 +60,13 @@ function create_inputs(randomWord=false) {
     totalAttempts.textContent = ATTEMPTS;
 
     for (let i = 0; i < currentWord.length; i++) {
-        const input = create_input();
+        const input = createInput();
         divLetterContainer.appendChild(input);
     }
 
     inputContainer.appendChild(divLetterContainer);
 
-    setWord(currentWord, divLetterContainer);
+    setDiv(divLetterContainer);
 }
 
 
@@ -102,7 +102,7 @@ function addNextInputEvent(div) {
 }
 
 
-function setWord(word, div) {
+function setDiv(div) {
     currentDiv = div;
     addNextInputEvent(div);
 }
@@ -114,14 +114,6 @@ function getInputedWord(inputs) {
      });
 
      return word.join("");
-}
-
-function getAllIndexes(word, letter) {
-    const indexes = [];
-    for(let i = 0; i < word.length; i++)
-        if (word[i] === letter)
-            indexes.push(i);
-    return indexes;
 }
 
 
@@ -182,11 +174,11 @@ function check_game(inputs, currentWord) {
     if (compare_words(inputs, currentWord)) {
         alert('Parabéns!!\nVocê adivinhou a palavra!');
         clearScreen();
-        create_inputs(true); 
+        startGame(true); 
     } else {
         if (ATTEMPTS < 4) {
             ATTEMPTS++;
-            create_inputs();
+            startGame();
         }
         else {
             alert(`VOCÊ PERDEU!`);
@@ -211,5 +203,5 @@ function clearScreen() {
 
 (async () => {
     WORDS = await loadJSON(); 
-    create_inputs(true); 
+    startGame(true); 
 })();
