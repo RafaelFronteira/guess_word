@@ -20,16 +20,16 @@ function generate_div_id() {
 
 function get_random_word() {
     const randomIndex = Math.floor(Math.random() * WORDS.length);
-    return WORDS[randomIndex];
+    return WORDS.splice(randomIndex, 1).pop();
 }
 
 function create_input() {
     const input = document.createElement("input");
 
+    input.id = "letter";
     input.type = "text";
     input.maxLength = 1;
     input.autocomplete = "off";
-    input.id = "letter";
     input.classList.add("_letter");
 
     return input;
@@ -52,7 +52,8 @@ function create_inputs(randomWord=false) {
     if (randomWord) {
         const word = get_random_word();
         currentWord = word['word'];
-        currentTip = word['tip']; 
+        currentTip = word['tip'];
+        ATTEMPTS = 1;
     }
 
     totalWords.textContent = currentTip;
@@ -137,26 +138,28 @@ function compare_words(inputs, currentWord) {
 }
 
 function add_color_reference(inputs, currentWord) {
-    const wordArray = Array.from(currentWord);
-
     const letterCounts = {};
     const usedLetterCounts = {};
-
+    let wordArray = Array.from(currentWord);
+    
+    
     // Conta a frequência de cada letra na palavra
-    wordArray.forEach(letter => {
+    wordArray = wordArray.map(letter => {
+        letter = normalizeLetter(letter)
         letterCounts[letter] = (letterCounts[letter] || 0) + 1;
+
+        return letter;
     });
 
-
-    // Mantém o controle das letras já usadas pelo usuário
     inputs.forEach((input, index) => {
-        const letter = input.value.toLowerCase();
-        const correctLetter = wordArray[index];
+        const letter = normalizeLetter(input.value.toLowerCase());
+        const correctLetter = normalizeLetter(wordArray[index]);
 
-        if (normalizeLetter(letter) === normalizeLetter(correctLetter)) {
+        if (letter === correctLetter) {
             input.classList.add('right');
             usedLetterCounts[letter] = (usedLetterCounts[letter] || 0) + 1;
-        } else if (wordArray.includes((letterIn) => normalizeLetter(letterIn) === normalizeLetter(letter))) {
+        } 
+        else if (wordArray.includes(letter)) {
             usedLetterCounts[letter] = (usedLetterCounts[letter] || 0) + 1;
             
             if (usedLetterCounts[letter] > (letterCounts[letter] || 0)) {
@@ -178,14 +181,15 @@ function normalizeLetter(letter) {
 function check_game(inputs, currentWord) {
     if (compare_words(inputs, currentWord)) {
         alert('Parabéns!!\nVocê adivinhou a palavra!');
-        location.reload();
+        clearScreen();
+        create_inputs(true); 
     } else {
         if (ATTEMPTS < 4) {
             ATTEMPTS++;
             create_inputs();
         }
         else {
-            alert(`VOCÊ PERDEU!\nA palavra era ${currentWord}!`);
+            alert(`VOCÊ PERDEU!`);
             location.reload();
         }
     }
@@ -196,6 +200,13 @@ function check() {
     block_inputs(currentDiv);
     add_color_reference(inputs, currentWord);
     check_game(inputs, currentWord);
+}
+
+function clearScreen() {
+    const container = document.getElementById("input_container");
+    while(container.lastElementChild) {
+        container.removeChild(container.lastElementChild);
+    }
 }
 
 (async () => {
